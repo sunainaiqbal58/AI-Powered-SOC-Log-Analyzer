@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI-Powered SOC Log Analyzer</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+        <style>
+
+.ai-report h1,
+.ai-report h2,
+.ai-report h3 {
+
+    color:#00d9ff;
+    margin-top:25px;
+    margin-bottom:15px;
+
+}
+
+
+.ai-report p {
+
+    color:#f1f1f1;
+
+}
+
+
+.ai-report li {
+
+    color:#e0e0e0;
+
+    margin-bottom:8px;
+
+}
+
+
+.ai-report strong {
+
+    color:#ffc107;
+
+}
+
+
+.ai-report ul {
+
+    padding-left:25px;
+
+}
+
+
+</style>
+
+    <style>
+
+        body{
+            background-color:#212529;
+        }
+
+        /* Dashboard Cards */
+
+        .card{
+
+            border:none;
+
+            transition:
+                transform .35s ease,
+                box-shadow .35s ease;
+
+            box-shadow:
+                0 10px 25px rgba(0,0,0,.45);
+
+        }
+
+        /* Hover Effect */
+
+        .card:hover{
+
+            transform:
+                translateY(-8px)
+                scale(1.02);
+
+            box-shadow:
+                0 18px 40px rgba(0,0,0,.65);
+
+        }
+
+        /* Navbar */
+
+        .navbar{
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,.45);
+
+        }
+
+        /* Badges */
+
+        .badge{
+
+            padding:10px 15px;
+
+            border-radius:10px;
+
+        }
+
+    </style>
+
+</head>
+
+<body class="bg-dark text-light">
+
+    <!-- Navbar -->
+
+    <nav class="navbar navbar-dark bg-black">
+
+        <div class="container-fluid">
+
+            <span class="navbar-brand fw-bold">
+
+                <i class="bi bi-shield-lock-fill text-info"></i>
+
+                AI-Powered SOC Log Analyzer
+
+            </span>
+
+            <span class="text-success fw-bold">
+
+                <i class="bi bi-circle-fill"></i>
+
+                System Active
+
+            </span>
+
+        </div>
+
+    </nav>
+
+    <div class="container mt-4">
+
+        <hr>
+
+        <!-- Row 1 -->
+
+        <div class="row">
+
+            <!-- Failed Logins -->
+
+            <div class="col-md-4 mb-4">
+
+                <div class="card bg-danger text-white rounded-4">
+
+                    <div class="card-body">
+
+                        <h5>
+
+                            <i class="bi bi-x-circle-fill"></i>
+
+                            Failed Logins
+
+                        </h5>
+
+                        <h1 class="display-5 fw-bold">
+
+                            {{ failed_logins }}
+
+                        </h1>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Successful Logins -->
+
+            <div class="col-md-4 mb-4">
+
+                <div class="card bg-success text-white rounded-4">
+
+                    <div class="card-body">
+
+                        <h5>
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            Successful Logins
+
+                        </h5>
+
+                        <h1 class="display-5 fw-bold">
+
+                            {{ successful_logins }}
+
+                        </h1>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Risk Level -->
+
+            <div class="col-md-4 mb-4">
+
+                <div class="card bg-warning text-dark rounded-4">
+
+                    <div class="card-body">
+
+                        <h5>
+
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+
+                            Risk Level
+
+                        </h5>
+
+                        <h2 class="fw-bold">
+
+                            {% if risk_level=="Critical" %}
+                            🚨
+                            {% elif risk_level=="High" %}
+                            ⚠️
+                            {% elif risk_level=="Medium" %}
+                            🔵
+                            {% else %}
+                            ✅
+                            {% endif %}
+
+                            {{ risk_level }}
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Row 2 -->
+
+        <div class="row">
+
+            <!-- Top IP -->
+
+            <div class="col-md-6 mb-4">
+
+                <div class="card bg-secondary text-white rounded-4">
+
+                    <div class="card-body">
+
+                        <h4>
+
+                            <i class="bi bi-globe"></i>
+
+                            Top Attacking IP
+
+                        </h4>
+
+                        <br>
+
+                        <span class="badge bg-primary fs-6">
+
+                            {{ top_ip }}
+
+                        </span>
+
+                        <br><br>
+
+                        <span class="badge bg-danger fs-6">
+
+                            Attempts : {{ top_ip_attempts }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Username -->
+
+            <div class="col-md-6 mb-4">
+
+                <div class="card bg-secondary text-white rounded-4">
+
+                    <div class="card-body">
+
+                        <h4>
+
+                            <i class="bi bi-person-fill"></i>
+
+                            Most Targeted Username
+
+                        </h4>
+
+                        <br>
+
+                        <span class="badge bg-success fs-6">
+
+                            {{ top_username }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Row 3 -->
+
+        <div class="row">
+
+            <!-- Risk Score -->
+
+            <div class="col-md-8 mb-4">
+
+                <div class="card bg-info text-dark rounded-4">
+
+                    <div class="card-body">
+
+                        <h4>
+
+                            <i class="bi bi-speedometer2"></i>
+
+                            Risk Score
+
+                        </h4>
+
+                        <h1 class="display-2 fw-bold">
+
+                            {{ risk_score }}
+
+                        </h1>
+
+                        <p class="fw-bold">
+
+                            Current Threat Index
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Total Logs -->
+
+            <div class="col-md-4 mb-4">
+
+                <div class="card bg-dark border border-info text-light rounded-4">
+
+                    <div class="card-body text-center">
+
+                        <h4>
+
+                            <i class="bi bi-file-earmark-text-fill text-info"></i>
+
+                            Total Logs
+
+                        </h4>
+
+                        <h1 class="display-4">
+
+                            {{ total_logs }}
+
+                        </h1>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    
+
+
+    <!-- AI Incident Report -->
+
+<div class="row">
+
+    <div class="col-12">
+
+        <div class="card bg-dark border border-primary rounded-4 mb-4">
+
+            <div class="card-body">
+
+                <h3 class="text-info">
+
+                    <i class="bi bi-robot"></i>
+
+                    AI SOC Incident Report
+
+                </h3>
+
+                <hr>
+
+                    
+                       <div class="ai-report p-4 rounded-3"
+style="
+background:#111827;
+color:#f8f9fa;
+font-family:'Segoe UI', Arial, sans-serif;
+font-size:16px;
+line-height:1.8;
+">
+
+
+{% if ai_report %}
+
+
+<div id="ai-report-content"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+
+<script>
+
+let report = `{{ ai_report | safe }}`;
+
+
+document.getElementById("ai-report-content").innerHTML =
+marked.parse(report);
+
+
+</script>
+
+
+{% else %}
+
+
+<div class="text-warning">
+
+<i class="bi bi-exclamation-circle"></i>
+
+AI Report not generated yet.
+
+</div>
+
+
+{% endif %}
+
+
+</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Download Reports -->
+
+<div class="text-center mb-5">
+
+    <h4 class="text-info mb-3">
+        <i class="bi bi-download"></i>
+        Export Reports
+    </h4>
+
+    <a href="/download/txt" class="btn btn-outline-primary btn-lg me-2">
+        <i class="bi bi-file-text"></i>
+        Download TXT
+    </a>
+
+    <a href="/download/pdf" class="btn btn-outline-danger btn-lg me-2">
+        <i class="bi bi-file-earmark-pdf"></i>
+        Download PDF
+    </a>
+
+    <a href="/download/csv" class="btn btn-outline-success btn-lg">
+        <i class="bi bi-file-earmark-spreadsheet"></i>
+        Download CSV
+    </a>
+
+</div>
+
+
+<!-- Login Statistics Chart -->
+
+<div class="row">
+
+    <div class="col-12 mb-4">
+
+        <div class="card bg-dark border border-info rounded-4">
+
+            <div class="card-body">
+
+                <h3 class="text-info">
+
+                    <i class="bi bi-bar-chart-fill"></i>
+
+                    Login Statistics Chart
+
+                </h3>
+
+                <hr>
+
+                <img
+                    src="{{ url_for('static', filename='charts/login_statistics.png') }}"
+                    class="img-fluid rounded"
+                    alt="Login Statistics Chart">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- Security Analytics -->
+
+<div class="container mt-5">
+
+    <h2 class="text-info text-center mb-4">
+
+        <i class="bi bi-bar-chart-fill"></i>
+
+        Security Analytics
+
+    </h2>
+
+    <div class="row">
+
+        <!-- Login Statistics -->
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card bg-dark border-info shadow-lg rounded-4 h-100">
+
+                <div class="card-body text-center">
+
+                    <h4 class="text-info">
+
+                        Login Statistics
+
+                    </h4>
+
+                    <img
+                        src="/reports_images/login_statistics.png"
+                        class="img-fluid rounded mt-3"
+                        alt="Login Statistics">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Login Ratio -->
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card bg-dark border-success shadow-lg rounded-4 h-100">
+
+                <div class="card-body text-center">
+
+                    <h4 class="text-success">
+
+                        Login Ratio
+
+                    </h4>
+
+                    <img
+                        src="/reports_images/login_ratio_chart.png"
+                        class="img-fluid rounded mt-3"
+                        alt="Login Ratio">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Top Attacking IP -->
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card bg-dark border-danger shadow-lg rounded-4 h-100">
+
+                <div class="card-body text-center">
+
+                    <h4 class="text-danger">
+
+                        Top Attacking IP
+
+                    </h4>
+
+                    <img
+                        src="/reports_images/top_attacking_ip_chart.png"
+                        class="img-fluid rounded mt-3"
+                        alt="Top Attacking IP">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Attack Timeline -->
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card bg-dark border-warning shadow-lg rounded-4 h-100">
+
+                <div class="card-body text-center">
+
+                    <h4 class="text-warning">
+
+                        Attack Timeline
+
+                    </h4>
+
+                    <img
+                        src="/reports_images/attack_timeline_chart.png"
+                        class="img-fluid rounded mt-3"
+                        alt="Attack Timeline">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- Footer -->
+
+    <footer class="text-center text-secondary mt-5 mb-3">
+
+        <hr>
+
+        <p>
+
+            © 2026 AI-Powered SOC Log Analyzer
+
+            |
+
+            Python • Flask • Bootstrap • OpenRouter AI
+
+        </p>
+        
+
+    </footer>
+
+</body>
+
+</html>

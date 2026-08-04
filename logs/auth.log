@@ -1,0 +1,12 @@
+Jul 31 09:15:01 ubuntu sshd[1024]: Failed password for root from 192.168.1.50 port 52411 ssh2
+Jul 31 09:15:08 ubuntu sshd[1024]: Failed password for root from 192.168.1.50 port 52412 ssh2
+Jul 31 09:15:08 ubuntu sshd[1024]: Accepted password for root from 192.168.1.50 port 52412 ssh2
+Jul 31 09:16:20 ubuntu sshd[1025]: Accepted password for admin from 192.168.1.20 port 52100 ssh2
+Jul 31 09:18:10 ubuntu sshd[1026]: Failed password for user from 192.168.1.60 port 53001 ssh2
+Jul 31 09:20:00 ubuntu sshd[1028]: Accepted password for sunaina from 192.168.1.100 port 54000 ssh2
+Jul 31 09:18:10 ubuntu sshd[1026]: Failed password for user from 192.168.1.60 port 53001 ssh2
+Jul 31 09:18:10 ubuntu sshd[1026]: Failed password for user from 192.168.1.60 port 53001 ssh2
+Jul 31 09:18:10 ubuntu sshd[1026]: Failed password for user from 192.168.1.60 port 53001 ssh2
+Jul 31 09:18:10 ubuntu sshd[1026]: Failed password for user from 192.168.1.60 port 53001 ssh2
+Jul 31 09:18:10 ubuntu sshd[1026]: Failed password for user from 192.168.1.60 port 53001 ssh2
+Jul 31 09:18:10 ubuntu sshd[1026]: Failed password for user from 192.168.1.60 port 53001 ssh2
